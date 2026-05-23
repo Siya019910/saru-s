@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Gallery – Saru's Beauty Bar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --black:#0a0a0a; --gold:#c9a84c; --gold-light:#e8c97a; --gold-pale:#f5e6b8;
+    --white:#faf8f2; --grey:#888;
+  }
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+ body {
+    /* Background styles */
+    background: url("background.jpg") no-repeat center center fixed;
+    background-size: cover;
+    background-color: #0a0a0a;
+    
+    /* Text styles */
+    color: var(--white);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    overflow-x: hidden;
+    
+    /* ADD THIS HERE: */
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='5' fill='%23c9a84c' fill-opacity='0.7'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%23c9a84c'/%3E%3C/svg%3E") 12 12, auto;
+}
+
+  header {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    background-color: #4A0404; /* Sets the dark maroon background */
+    border-bottom: 1px solid rgba(201,168,76,0.25);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 20px; height:52px; backdrop-filter:blur(8px);
+  }
+
+  .logo-wrap { display:flex; align-items:center; gap:9px; text-decoration:none; }
+  .logo-img { height:36px; width:36px; object-fit:contain; }
+  .logo-text { font-family:'Playfair Display',serif; font-style:italic; font-weight:700; font-size:1.05rem; color:var(--gold); letter-spacing:0.03em; white-space:nowrap; }
+  nav { display:flex; gap:4px; align-items:center; }
+  nav a { color:var(--white); text-decoration:none; font-size:0.72rem; letter-spacing:0.08em; padding:5px 8px; border:1px solid transparent; border-radius:2px; transition:all 0.25s; white-space:nowrap; font-style:italic; }
+  nav a:hover, nav a.active { color:var(--gold); border-color:rgba(201,168,76,0.4); }
+
+  .page-hero {
+    padding:90px 24px 50px; text-align:center;
+    background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(201,168,76,0.07) 0%,transparent 70%);
+  }
+  .page-label { font-size:0.6rem; letter-spacing:0.35em; color:var(--gold); text-transform:uppercase; margin-bottom:12px; display:block; }
+  h1 { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(2rem,7vw,3.5rem); font-weight:700; }
+  h1 span { color:var(--gold); }
+  .hero-divider { width:60px; height:1px; background:linear-gradient(to right,transparent,var(--gold),transparent); margin:18px auto; }
+  .page-hero p { color:rgba(250,248,242,0.7); font-size:1rem; max-width:500px; margin:0 auto; line-height:1.7; }
+
+  main { max-width:1000px; margin:0 auto; padding:0 20px 60px; }
+
+  /* FILTER TABS */
+  .filter-tabs { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin:28px 0 22px; }
+  .tab {
+    font-family:'Cormorant Garamond',serif; font-style:italic;
+    font-size:0.72rem; letter-spacing:0.12em; padding:7px 14px;
+    border:1px solid rgba(201,168,76,0.3); border-radius:2px;
+    background:transparent; color:var(--grey); cursor:pointer;
+    transition:all 0.25s;
+  }
+  .tab:hover, .tab.active { color:var(--gold); border-color:var(--gold); background:rgba(201,168,76,0.07); }
+
+  /* GALLERY GRID */
+  .gallery-grid {
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+  }
+  .gallery-item {
+    position:relative; overflow:hidden; border-radius:3px;
+    border:1px solid rgba(201,168,76,0.1);
+    aspect-ratio:1;
+    background:rgba(201,168,76,0.05);
+    cursor:pointer; transition:transform 0.3s, border-color 0.3s;
+  }
+  .gallery-item:hover { transform:scale(1.01); border-color:rgba(201,168,76,0.4); }
+  .gallery-item:nth-child(4n+1) { grid-column:span 2; aspect-ratio:2/1; }
+  .gallery-item img, .gallery-item video {
+    width:100%; height:100%; object-fit:cover; display:block;
+    transition:transform 0.5s;
+  }
+  .gallery-item:hover img, .gallery-item:hover video { transform:scale(1.04); }
+  .gallery-overlay {
+    position:absolute; inset:0;
+    background:linear-gradient(to top,rgba(0,0,0,0.7) 0%,transparent 50%);
+    opacity:0; transition:opacity 0.3s;
+    display:flex; align-items:flex-end; padding:12px;
+  }
+  .gallery-item:hover .gallery-overlay { opacity:1; }
+  .gallery-label { font-size:0.72rem; color:var(--gold); letter-spacing:0.05em; }
+
+  /* PLACEHOLDER CARDS (when no real images) */
+  .placeholder {
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:6px; padding:16px; height:100%;
+  }
+  .placeholder .ph-icon { font-size:1.8rem; opacity:0.5; }
+  .placeholder .ph-text { font-size:0.72rem; color:var(--grey); text-align:center; }
+
+  /* VIDEO BADGE */
+  .video-badge {
+    position:absolute; top:8px; right:8px;
+    background:rgba(0,0,0,0.7); border:1px solid var(--gold);
+    border-radius:2px; padding:3px 8px; font-size:0.62rem; color:var(--gold);
+  }
+
+  /* UPLOAD NOTE */
+  .upload-note {
+    text-align:center; margin:20px 0;
+    font-size:0.85rem; color:var(--grey);
+    border:1px dashed rgba(201,168,76,0.2); border-radius:4px;
+    padding:20px;
+  }
+  .upload-note strong { color:var(--gold); }
+
+  /* LIGHTBOX */
+  .lightbox {
+    display:none; position:fixed; inset:0; z-index:999;
+    background:rgba(0,0,0,0.93); align-items:center; justify-content:center; padding:20px;
+  }
+  .lightbox.show { display:flex; }
+  .lightbox img, .lightbox video { max-width:100%; max-height:85vh; border-radius:4px; border:1px solid rgba(201,168,76,0.3); }
+  .lb-close { position:absolute; top:16px; right:20px; color:var(--gold); font-size:1.6rem; cursor:pointer; background:none; border:none; }
+  .lb-caption { position:absolute; bottom:20px; left:0; right:0; text-align:center; font-size:0.85rem; color:var(--gold); }
+
+  /* CTA */
+  .gallery-cta { text-align:center; margin-top:36px; }
+  .gallery-cta p { color:rgba(250,248,242,0.7); margin-bottom:14px; font-size:1rem; }
+  .btn-row { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+  .btn { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:0.75rem; letter-spacing:0.1em; padding:9px 16px; border-radius:2px; cursor:pointer; text-decoration:none; transition:all 0.3s; white-space:nowrap; display:inline-block; }
+  .btn-gold { background:var(--gold); color:var(--black); border:1px solid var(--gold); font-weight:600; }
+  .btn-gold:hover { background:var(--gold-light); }
+  .btn-outline { background:transparent; color:var(--gold); border:1px solid var(--gold); }
+  .btn-outline:hover { background:rgba(201,168,76,0.1); }
+
+  footer { background:#4A0404; border-top:1px solid rgba(201,168,76,0.15); padding:14px 24px; text-align:center; font-size:0.68rem; color:var(--grey); }
+  footer a { color:var(--grey); text-decoration:none; font-size:0.68rem; font-style:italic; transition:color 0.2s; }
+  footer a:hover { color:var(--gold); }
+
+  @media (max-width:640px) {
+    .gallery-grid { grid-template-columns:repeat(2,1fr); gap:7px; }
+    .gallery-item:nth-child(4n+1) { grid-column:span 2; }
+    nav a { font-size:0.65rem; padding:5px 6px; }
+    .logo-text { font-size:0.9rem; }
+  }
+  @media (max-width:400px) {
+    nav a { font-size:0.6rem; padding:4px 5px; }
+    .gallery-grid { grid-template-columns:repeat(2,1fr); }
+  }
+
+  /* Zoom Effect */
+.gallery-item {
+    transition: transform 0.3s ease;
+}
+.gallery-item:hover {
+    transform: scale(1.05); /* Smooth zoom */
+    z-index: 10;
+}
+
+/* Lightbox Image Display */
+#lb-img {
+    max-width: 90%;
+    max-height: 80vh;
+    border: 2px solid var(--gold);
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo-wrap">
+    <img src="logo.png" alt="Logo" class="logo-img" />
+  </a>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="gallery.html" class="active">Gallery</a>
+    <a href="faq.html">FAQ</a>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <span class="page-label">✦ &nbsp; Our Work</span>
+  <h1>The <span>Gallery</span></h1>
+  <div class="hero-divider"></div>
+  <p>A showcase of our finest work. Every look is crafted with love, skill, and artistry.</p>
+</div>
+
+<main>
+  <!-- FILTER TABS -->
+  <div class="filter-tabs">
+    <button class="tab active" onclick="filterGallery('all',this)">All Work</button>
+    <button class="tab" onclick="filterGallery('nails',this)">Nails</button>
+    <button class="tab" onclick="filterGallery('makeup',this)">Make-Up</button>
+    <button class="tab" onclick="filterGallery('wigs',this)">Wigs</button>
+    <button class="tab" onclick="filterGallery('lashes',this)">Lashes</button>
+    <button class="tab" onclick="filterGallery('pedicure',this)">Pedicure</button>
+    <button class="tab" onclick="filterGallery('gel',this)">Gel Overlay</button>
+    <button class="tab" onclick="filterGallery('video',this)">Videos</button>
+  </div>
+
+  <div class="upload-note">
+    <strong>✦ A curated collection of our signature styles.</strong><br/>
+    Explore our artistry, craftsmanship, and the beauty we create every day.
+</div>
+
+  <!-- GALLERY GRID -->
+  <div class="gallery-grid" id="gallery">
+
+   <div class="gallery-grid" id="gallery">
+    <div class="gallery-item" data-cat="nails" onclick="openLight('img1.jpg', '💅 Nails Work', 'nails')">
+        <img src="img1.jpg" alt="Nails">
+        <div class="gallery-overlay"><span class="gallery-label">Nails</span></div>
+    </div>
+    <div class="gallery-item" data-cat="nails" onclick="openLight('img2.jpg', '💅 Nails Work', 'nails')">
+        <img src="img2.jpg" alt="Nails">
+        <div class="gallery-overlay"><span class="gallery-label">Nails</span></div>
+    </div>
+    </div>
+    <div class="gallery-item" data-cat="nails" onclick="openLight('img3.jpg', '💅 Nails Work', 'nails')">
+        <img src="img3.jpg" alt="Nails">
+        <div class="gallery-overlay"><span class="gallery-label">Nails</span></div>
+    </div>
+    </div>
+    <div class="gallery-item" data-cat="nails" onclick="openLight('img4.jpg', '💅 Nails Work', 'nails')">
+        <img src="img4.jpg" alt="Nails">
+        <div class="gallery-overlay"><span class="gallery-label">Nails</span></div>
+    </div>
+    </div>
+    <div class="gallery-item" data-cat="nails" onclick="openLight('img5.jpg', '💅 Nails Work', 'nails')">
+        <img src="img5.jpg" alt="Nails">
+        <div class="gallery-overlay"><span class="gallery-label">Nails</span></div>
+    </div>
+    </div>
+    <div class="gallery-item" data-cat="nails" onclick="openLight('img6.jpg', '💅 Nails Work', 'nails')">
+        <img src="img6.jpg" alt="Nails">
+        <div class="gallery-overlay"><span class="gallery-label">Nails</span></div>
+    </div>
+    </div>
+    <div class="gallery-item" data-cat="nails" onclick="openLight('img7.jpg', '💅 Nails Work', 'nails')">
+        <img src="img7.jpg" alt="Nails">
+        <div class="gallery-overlay"><span class="gallery-label">Nails</span></div>
+    </div>
+    </div>
+
+    <div class="gallery-item" data-cat="video" onclick="openLight('🎬 Beauty Reel','video')">
+        <video src="vid1.mp4" muted loop playsinline></video>
+        <span class="video-badge">▶ VIDEO</span>
+        <div class="gallery-overlay"><span class="gallery-label">Beauty Reel</span></div>
+    </div>
+    <div class="gallery-item" data-cat="video" onclick="openLight('🎬 Beauty Reel','video')">
+        <video src="vid2.mp4" muted loop playsinline></video>
+        <span class="video-badge">▶ VIDEO</span>
+        <div class="gallery-overlay"><span class="gallery-label">Beauty Reel</span></div>
+    </div>
+</div>
+<div class="gallery-item" data-cat="video" onclick="openLight('🎬 Beauty Reel','video')">
+        <video src="vid3.mp4" muted loop playsinline></video>
+        <span class="video-badge">▶ VIDEO</span>
+        <div class="gallery-overlay"><span class="gallery-label">Beauty Reel</span></div>
+    </div>
+</div>
+<div class="gallery-item" data-cat="video" onclick="openLight('🎬 Beauty Reel','video')">
+        <video src="vid4.mp4" muted loop playsinline></video>
+        <span class="video-badge">▶ VIDEO</span>
+        <div class="gallery-overlay"><span class="gallery-label">Beauty Reel</span></div>
+    </div>
+</div>
+
+  <!-- CTA -->
+  <div class="gallery-cta">
+    <p>Love what you see? Let us create your perfect look.</p>
+    <div class="btn-row">
+      <a href="https://wa.me/27662773338" class="btn btn-gold">💬 Book on WhatsApp</a>
+      <a href="tel:0662773338" class="btn btn-outline">📞 Call Us</a>
+      <a href="services.html" class="btn btn-outline">View Services</a>
+    </div>
+  </div>
+</main>
+
+<!-- LIGHTBOX -->
+<!-- The Lightbox Overlay -->
+<div id="lightbox" class="lightbox">
+  <span class="close-btn" onclick="closeLight()">&times;</span>
+  
+  <!-- This is the container for the image -->
+  <img id="lb-img" src="" alt="Gallery Image">
+  
+  <!-- This is for the text/caption -->
+  <p id="lb-caption"></p>
+</div>
+
+<footer>
+  <span style="color:rgba(201,168,76,0.6);">™</span> &nbsp; <strong style="color:var(--gold);font-style:italic;">Saru's Beauty Bar</strong> &nbsp; · &nbsp; All Rights Reserved &copy; 2025 &nbsp; · &nbsp; 1246 Bonafide St, Buhle Park Phase 2
+</footer>
+
+<script>
+function filterGallery(cat, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.gallery-item').forEach(item => {
+    item.style.display = (cat === 'all' || item.dataset.cat === cat) ? '' : 'none';
+  });
+}
+const icons = { nails:'💅', makeup:'✨', wigs:'👑', lashes:'👁️', pedicure:'🦶', gel:'💎', video:'🎬' };
+function openLight(caption, cat) {
+  document.getElementById('lb-caption').textContent = caption;
+  document.getElementById('lb-icon').textContent = icons[cat] || '✨';
+  document.getElementById('lightbox').classList.add('show');
+}
+function closeLightbox(e) {
+  if (e.target.id === 'lightbox') document.getElementById('lightbox').classList.remove('show');
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') document.getElementById('lightbox').classList.remove('show'); });
+</script>
+</body>
+</html>

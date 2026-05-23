@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>FAQ – Saru's Beauty Bar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --black:#0a0a0a; --gold:#c9a84c; --gold-light:#e8c97a; --gold-pale:#f5e6b8;
+    --white:#faf8f2; --grey:#888;
+  }
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+ body {
+    /* Replace 'background.jpg' with the actual filename of your image */
+    background: url("background.jpg") no-repeat center center fixed;
+    background-size: cover;
+    background-color: #0a0a0a; /* Fallback color */
+    color: var(--white);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    overflow-x: hidden;
+    /* The cursor property is now inside the body block */
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='5' fill='%23c9a84c' fill-opacity='0.7'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%23c9a84c'/%3E%3C/svg%3E") 12 12, auto;
+}
+  header {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    background-color: #4A0404; /* Sets the dark maroon background */
+    border-bottom: 1px solid rgba(201,168,76,0.25);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 20px; height:52px; backdrop-filter:blur(8px);
+  }
+
+  .logo-wrap { display:flex; align-items:center; gap:9px; text-decoration:none; }
+  .logo-img { height:36px; width:36px; object-fit:contain; }
+  .logo-text { font-family:'Playfair Display',serif; font-style:italic; font-weight:700; font-size:1.05rem; color:var(--gold); letter-spacing:0.03em; white-space:nowrap; }
+  nav { display:flex; gap:4px; align-items:center; }
+  nav a { color:var(--white); text-decoration:none; font-size:0.72rem; letter-spacing:0.08em; padding:5px 8px; border:1px solid transparent; border-radius:2px; transition:all 0.25s; white-space:nowrap; font-style:italic; }
+  nav a:hover, nav a.active { color:var(--gold); border-color:rgba(201,168,76,0.4); }
+
+  .page-hero {
+    padding:90px 24px 50px; text-align:center;
+    background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(201,168,76,0.07) 0%,transparent 70%);
+  }
+  .page-label { font-size:0.6rem; letter-spacing:0.35em; color:var(--gold); text-transform:uppercase; margin-bottom:12px; display:block; }
+  h1 { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(2rem,7vw,3.5rem); font-weight:700; }
+  h1 span { color:var(--gold); }
+  .hero-divider { width:60px; height:1px; background:linear-gradient(to right,transparent,var(--gold),transparent); margin:18px auto; }
+  .page-hero p { color:rgba(250,248,242,0.7); font-size:1rem; max-width:500px; margin:0 auto; line-height:1.7; }
+
+  main { max-width:780px; margin:0 auto; padding:0 20px 60px; }
+
+  /* CATEGORY */
+  .faq-section { margin-bottom:40px; }
+  .faq-cat-label {
+    font-size:0.62rem; letter-spacing:0.28em; color:var(--gold);
+    text-transform:uppercase; margin-bottom:14px; display:block;
+    padding-bottom:8px; border-bottom:1px solid rgba(201,168,76,0.15);
+  }
+
+  /* ACCORDION */
+  .faq-item {
+    border:1px solid rgba(201,168,76,0.15); border-radius:3px;
+    margin-bottom:8px; overflow:hidden;
+    background:rgba(201,168,76,0.02);
+    transition:border-color 0.3s;
+  }
+  .faq-item.open { border-color:rgba(201,168,76,0.35); }
+  .faq-q {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 18px; cursor:pointer;
+    gap:12px;
+  }
+  .faq-q:hover { background:rgba(201,168,76,0.04); }
+  .faq-q-text { font-size:0.95rem; color:var(--white); flex:1; line-height:1.4; }
+  .faq-icon { color:var(--gold); font-size:1rem; min-width:16px; text-align:center; transition:transform 0.3s; }
+  .faq-item.open .faq-icon { transform:rotate(45deg); }
+  .faq-a {
+    max-height:0; overflow:hidden;
+    transition:max-height 0.4s ease;
+    padding:0 18px;
+  }
+  .faq-a.open { max-height:300px; padding:0 18px 16px; }
+  .faq-a p { color:rgba(250,248,242,0.73); font-size:0.9rem; line-height:1.85; }
+  .faq-a .highlight { color:var(--gold); }
+
+  /* CONTACT SECTION */
+  .contact-section {
+    background:linear-gradient(135deg,rgba(201,168,76,0.08),rgba(201,168,76,0.02));
+    border:1px solid rgba(201,168,76,0.25); border-radius:4px;
+    padding:30px 24px; text-align:center; margin-bottom:30px;
+  }
+  .contact-section h2 { font-family:'Playfair Display',serif; font-style:italic; font-size:1.6rem; color:var(--gold); margin-bottom:8px; }
+  .contact-section p { color:rgba(250,248,242,0.7); font-size:0.95rem; margin-bottom:20px; line-height:1.7; }
+  .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; max-width:420px; margin:0 auto 20px; }
+  .contact-tile {
+    border:1px solid rgba(201,168,76,0.25); border-radius:3px;
+    padding:14px 10px; text-align:center; text-decoration:none;
+    background:rgba(0,0,0,0.4); transition:all 0.25s;
+  }
+  .contact-tile:hover { border-color:var(--gold); background:rgba(201,168,76,0.07); }
+  .contact-tile .ct-icon { font-size:1.4rem; display:block; margin-bottom:5px; }
+  .contact-tile .ct-label { font-size:0.7rem; color:var(--gold); display:block; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:3px; }
+  .contact-tile .ct-val { font-size:0.82rem; color:var(--white); }
+  .address-tile {
+    grid-column:span 2;
+    border:1px solid rgba(201,168,76,0.25); border-radius:3px;
+    padding:12px 14px; text-align:center;
+    background:rgba(0,0,0,0.4);
+    display:flex; align-items:center; justify-content:center; gap:10px;
+  }
+  .address-tile span { font-size:0.85rem; color:rgba(250,248,242,0.75); }
+
+  /* BUTTONS */
+  .btn-row { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+  .btn { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:0.75rem; letter-spacing:0.1em; padding:9px 16px; border-radius:2px; cursor:pointer; text-decoration:none; transition:all 0.3s; white-space:nowrap; display:inline-block; }
+  .btn-gold { background:var(--gold); color:var(--black); border:1px solid var(--gold); font-weight:600; }
+  .btn-gold:hover { background:var(--gold-light); }
+  .btn-outline { background:transparent; color:var(--gold); border:1px solid var(--gold); }
+  .btn-outline:hover { background:rgba(201,168,76,0.1); }
+
+  footer { background:#4A0404; border-top:1px solid rgba(201,168,76,0.15); padding:14px 24px; text-align:center; font-size:0.68rem; color:var(--grey); }
+  footer a { color:var(--grey); text-decoration:none; font-size:0.68rem; font-style:italic; transition:color 0.2s; }
+  footer a:hover { color:var(--gold); }
+
+  @media (max-width:500px) {
+    .contact-grid { grid-template-columns:1fr; }
+    .address-tile { grid-column:span 1; }
+    nav a { font-size:0.65rem; padding:5px 6px; }
+    .logo-text { font-size:0.9rem; }
+  }
+  @media (max-width:400px) {
+    nav a { font-size:0.6rem; padding:4px 5px; }
+    .btn { font-size:0.7rem; padding:8px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <!-- Keep this simple, just the logo -->
+  <a href="index.html" class="logo-wrap">
+    <img src="logo.png" alt="Logo" class="logo-img" />
+  </a>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="gallery.html" class="active">Gallery</a>
+    <a href="faq.html">FAQ</a>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <span class="page-label">✦ &nbsp; Got Questions?</span>
+  <h1>Frequently Asked <span>Questions</span></h1>
+  <div class="hero-divider"></div>
+  <p>Everything you need to know before your visit. If your question isn't here, just ask us on WhatsApp!</p>
+</div>
+
+<main>
+
+  <!-- GENERAL -->
+  <div class="faq-section">
+    <span class="faq-cat-label">✦ &nbsp; General</span>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">Where is Saru's Beauty Bar located?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <p>We are located at <span class="highlight">1246 Bonafide Street, Buhle Park Phase 2</span>. You can contact us on WhatsApp or call for directions to find us easily.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">How do I book an appointment?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <p>Simply WhatsApp or call us on <span class="highlight">066 277 3338</span> to book your slot. We recommend booking in advance to secure your preferred date and time.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">What are your operating hours?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <p>Please contact us directly on <span class="highlight">066 277 3338</span> for current operating hours, as times may vary. We try to accommodate flexible schedules wherever possible.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">Do I need to make a deposit?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <p>For training classes and some services a small deposit may be required to confirm your booking. Please enquire via WhatsApp for the current deposit policy.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <div class="faq-section">
+    <span class="faq-cat-label">✦ &nbsp; Services</span>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">What nail services do you offer?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <p>We offer classic manicures, acrylic extensions, nail art, French tips, gel overlay, builder gel, gel polish, and nail repairs. Whether simple or elaborate, we have you covered.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">Do you do wig installations for all hair types?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <p>Yes! We install lace front wigs, full cap wigs, and frontal units. We work with all hair types and textures to ensure a secure, natural-looking finish.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">Can I bring my own lashes or wig?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <p>Absolutely! You are welcome to bring your own products. Just let us know in advance so we can ensure we have everything prepared for your appointment.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">Do you offer make-up for special events like weddings?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <p>Yes! We offer make-up for all occasions — weddings, matric dances, graduations, birthday parties, and more. Book early for special occasions to avoid disappointment.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">How long does gel overlay last?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <p>Gel overlay typically lasts <span class="highlight">2–4 weeks</span> depending on your nail growth and how well you care for your nails. We recommend infills every 2–3 weeks for the best results.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRAINING -->
+  <div class="faq-section">
+    <span class="faq-cat-label">✦ &nbsp; Beauty Training</span>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">What training courses do you offer?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <p>We offer professional training in <span class="highlight">nails, wig installation, make-up artistry, lash application, and gel overlay</span>. Each course is hands-on and practical, taught by Saru herself.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">Is a training kit included in the course?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <p><span class="highlight">Yes! A full professional training kit is provided in every class.</span> You will leave with everything you need to start practising your new skills right away — no extra cost for your kit.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">Do I need prior experience to join a training class?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <p>No prior experience is needed! Our courses are designed for beginners as well as those looking to upskill. All you need is passion and dedication — we handle the rest.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">How long are the training classes?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <p>Course duration varies per discipline. Contact us on <span class="highlight">066 277 3338</span> for a full outline of each course, including duration, curriculum, and pricing.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">Will I receive a certificate after training?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        <p>Please enquire directly about certification. We take your professional development seriously and want to ensure you have the credentials to support your career in beauty.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="contact-section">
+    <h2>✦ Still Have Questions? ✦</h2>
+    <p>We would love to hear from you. Reach out on WhatsApp or give us a call — we are always happy to help.</p>
+    <div class="contact-grid">
+      <a href="https://wa.me/27662773338" class="contact-tile">
+        <span class="ct-icon">💬</span>
+        <span class="ct-label">WhatsApp</span>
+        <span class="ct-val">066 277 3338</span>
+      </a>
+      <a href="tel:0662773338" class="contact-tile">
+        <span class="ct-icon">📞</span>
+        <span class="ct-label">Call</span>
+        <span class="ct-val">066 277 3338</span>
+      </a>
+      <div class="address-tile">
+        <span>📍</span>
+        <span>1246 Bonafide Street, Buhle Park Phase 2</span>
+      </div>
+    </div>
+    <div class="btn-row">
+      <a href="https://wa.me/27662773338" class="btn btn-gold">💬 Chat on WhatsApp</a>
+      <a href="services.html" class="btn btn-outline">View Services</a>
+      <a href="gallery.html" class="btn btn-outline">See Gallery</a>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <span style="color:rgba(201,168,76,0.6);">™</span> &nbsp; <strong style="color:var(--gold);font-style:italic;">Saru's Beauty Bar</strong> &nbsp; · &nbsp; All Rights Reserved &copy; 2025 &nbsp; · &nbsp; 1246 Bonafide St, Buhle Park Phase 2
+</footer>
+
+<script>
+function toggleFaq(qEl) {
+  const item = qEl.parentElement;
+  const answer = item.querySelector('.faq-a');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => {
+    i.classList.remove('open');
+    i.querySelector('.faq-a').classList.remove('open');
+  });
+  if (!isOpen) {
+    item.classList.add('open');
+    answer.classList.add('open');
+  }
+}
+// Open first FAQ
+document.querySelector('.faq-item').classList.add('open');
+document.querySelector('.faq-a').classList.add('open');
+</script>
+</body>
+</html>

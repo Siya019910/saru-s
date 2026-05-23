@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Saru's Beauty Bar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Playfair+Display:ital,wght@0,700;1,700&family=EB+Garamond:ital,wght@1,400;1,500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --black: #0a0a0a;
+    --black2: #111111;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-pale: #f5e6b8;
+    --white: #faf8f2;
+    --grey: #888;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    /* Background styles */
+    background: url("background.jpg") no-repeat center center fixed;
+    background-size: cover;
+    background-color: #0a0a0a;
+    
+    /* Text styles */
+    color: var(--white);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    overflow-x: hidden;
+
+    /* Custom Cursor and Position */
+    position: relative;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='5' fill='%23c9a84c' fill-opacity='0.7'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%23c9a84c'/%3E%3C/svg%3E") 12 12, auto;
+}
+
+  /* ── HEADER ── */
+  header {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    background-color: #4A0404; /* Sets the dark maroon background */
+    border-bottom: 1px solid rgba(201,168,76,0.25);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 20px; height:52px; backdrop-filter:blur(8px);
+  }
+  .logo-wrap { display: flex; align-items: center; gap: 9px; text-decoration: none; }
+  .logo-img { height: 36px; width: 36px; object-fit: contain; }
+  .logo-text {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--gold);
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+  nav { display: flex; gap: 4px; align-items: center; }
+  nav a {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    padding: 5px 8px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    transition: all 0.25s;
+    white-space: nowrap;
+    font-style: italic;
+  }
+  nav a:hover, nav a.active {
+    color: var(--gold);
+    border-color: rgba(201,168,76,0.4);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center;
+    padding: 80px 24px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 50% 40%, rgba(201,168,76,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(201,168,76,0.04) 0%, transparent 60%);
+  }
+  .hero-ornament {
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    opacity: 0.8;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(2.4rem, 8vw, 5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+  .hero h1 span { color: var(--gold); }
+  .hero-divider {
+    width: 60px; height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    margin: 18px auto;
+  }
+  .hero-sub {
+    font-size: clamp(0.95rem, 2.5vw, 1.2rem);
+    color: rgba(250,248,242,0.75);
+    max-width: 520px;
+    line-height: 1.7;
+    margin-bottom: 32px;
+  }
+  .btn-group { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  .btn {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    padding: 9px 18px;
+    border-radius: 2px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s;
+    white-space: nowrap;
+    display: inline-block;
+  }
+  .btn-gold {
+    background: var(--gold);
+    color: var(--black);
+    border: 1px solid var(--gold);
+    font-weight: 600;
+  }
+  .btn-gold:hover { background: var(--gold-light); border-color: var(--gold-light); }
+  .btn-outline {
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+  }
+  .btn-outline:hover { background: rgba(201,168,76,0.1); }
+
+  /* ── SECTION BASE ── */
+  section { padding: 64px 24px; max-width: 1000px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: block;
+  }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.7rem, 5vw, 2.5rem);
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 14px;
+    line-height: 1.2;
+  }
+  .gold-rule {
+    width: 50px; height: 1px;
+    background: linear-gradient(to right, var(--gold), transparent);
+    margin-bottom: 28px;
+  }
+
+  /* ── ABOUT ── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+  .about-text p {
+    color: rgba(250,248,242,0.78);
+    line-height: 1.85;
+    font-size: 1.05rem;
+    margin-bottom: 14px;
+  }
+  .about-card {
+    background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.02));
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 4px;
+    padding: 32px 28px;
+    text-align: center;
+  }
+  .about-card .big-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    color: var(--gold);
+    font-style: italic;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .about-card .big-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    color: var(--grey);
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+  /* ── SERVICES PREVIEW ── */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 14px;
+    margin-top: 8px;
+  }
+  .service-chip {
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 3px;
+    padding: 16px 12px;
+    text-align: center;
+    background: rgba(201,168,76,0.03);
+    transition: all 0.3s;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+  }
+  .service-chip:hover {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.07);
+    transform: translateY(-2px);
+  }
+  .service-chip .icon { font-size: 1.4rem; display: block; margin-bottom: 7px; }
+  .service-chip span {
+    font-size: 0.8rem;
+    color: var(--gold-pale);
+    display: block;
+    font-style: italic;
+  }
+
+  /* ── CONTACT STRIP ── */
+  .contact-strip {
+    background: linear-gradient(to right, rgba(201,168,76,0.1), rgba(201,168,76,0.04));
+    border-top: 1px solid rgba(201,168,76,0.2);
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    padding: 36px 24px;
+    text-align: center;
+  }
+  .contact-strip h3 {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.5rem;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .contact-info { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .contact-pill {
+    background: rgba(10,10,10,0.6);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 30px;
+    padding: 8px 18px;
+    font-size: 0.82rem;
+    color: var(--white);
+    display: flex; align-items: center; gap: 7px;
+    text-decoration: none;
+    transition: all 0.25s;
+  }
+  .contact-pill:hover { border-color: var(--gold); color: var(--gold); }
+  .contact-pill .ci { color: var(--gold); font-size: 1rem; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #4A0404;
+    border-top: 1px solid rgba(201,168,76,0.15);
+    padding: 14px 24px;
+    text-align: center;
+    font-size: 0.68rem;
+    color: var(--grey);
+  }
+  footer a { color: var(--grey); text-decoration: none; font-size: 0.68rem; font-style: italic; transition: color 0.2s; }
+  footer a:hover { color: var(--gold); }
+  footer .tm { color: rgba(201,168,76,0.6); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .about-grid { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: 1fr 1fr; }
+    nav a { font-size: 0.65rem; padding: 5px 6px; }
+    .logo-text { font-size: 0.9rem; }
+  }
+  @media (max-width: 400px) {
+    nav a { font-size: 0.6rem; padding: 4px 5px; }
+    .btn { font-size: 0.7rem; padding: 8px 13px; }
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+  .hero h1 { animation: fadeUp 0.9s ease both; }
+  .hero-sub { animation: fadeUp 0.9s 0.2s ease both; }
+  .btn-group { animation: fadeUp 0.9s 0.4s ease both; }
+</style>
+</head>
+<body>
+
+<header>
+  <!-- Keep this simple, just the logo -->
+  <a href="index.html" class="logo-wrap">
+    <img src="logo.png" alt="Logo" class="logo-img" />
+  </a>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="gallery.html" class="active">Gallery</a>
+    <a href="faq.html">FAQ</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="hero-ornament">✦ &nbsp; est. beauty excellence &nbsp; ✦</p>
+  <h1>Your Beauty,<br/><span>Your Choice</span></h1>
+  <div class="hero-divider"></div>
+  <p class="hero-sub">Discover the perfect look with our premium styling services, or master the craft yourself through my professional beauty training.</p>
+  <div class="btn-group">
+    <a href="services.html" class="btn btn-gold">Explore Services</a>
+    <a href="faq.html" class="btn btn-outline">Book Training</a>
+    <a href="gallery.html" class="btn btn-outline">View Gallery</a>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section>
+  <span class="section-label">✦ &nbsp; About Us</span>
+  <h2>Elevating Looks Through<br/>Expert Care & Training</h2>
+  <div class="gold-rule"></div>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>At Saru's Beauty Bar, beauty is not just a service — it is an art form. We offer a curated selection of premium beauty treatments designed to enhance your natural elegance and express your unique identity.</p>
+      <p>Whether you come for a stunning transformation or to learn the trade yourself, our doors are open to every queen. Located in the heart of Buhle Park, we bring luxury beauty to your neighbourhood.</p>
+      <a href="services.html" class="btn btn-gold" style="margin-top:8px;">Our Services</a>
+    </div>
+    <div class="stats">
+      <div class="about-card"><div class="big-number">7+</div><div class="big-label">Services Offered</div></div>
+      <div class="about-card"><div class="big-number">∞</div><div class="big-label">Happy Clients</div></div>
+      <div class="about-card"><div class="big-number">✦</div><div class="big-label">Training Kits Provided</div></div>
+      <div class="about-card"><div class="big-number">★★★★★</div><div class="big-label" style="font-size:0.6rem;">Premium Quality</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES PREVIEW -->
+<section style="padding-top:0;">
+  <span class="section-label">✦ &nbsp; What We Offer</span>
+  <h2>Our Signature Services</h2>
+  <div class="gold-rule"></div>
+  <div class="services-grid">
+    <a href="services.html" class="service-chip"><span class="icon">💅</span><span>Nails</span></a>
+    <a href="services.html" class="service-chip"><span class="icon">👑</span><span>Wig Installation</span></a>
+    <a href="services.html" class="service-chip"><span class="icon">✨</span><span>Make-Up</span></a>
+    <a href="services.html" class="service-chip"><span class="icon">👁️</span><span>Eye Lashes</span></a>
+    <a href="services.html" class="service-chip"><span class="icon">🦶</span><span>Pedicure</span></a>
+    <a href="services.html" class="service-chip"><span class="icon">💎</span><span>Gel Overlay</span></a>
+    <a href="services.html" class="service-chip"><span class="icon">🎓</span><span>Beauty Training</span></a>
+  </div>
+</section>
+
+<!-- CONTACT STRIP -->
+<div class="contact-strip">
+  <h3>Ready to Book Your Appointment?</h3>
+  <div class="contact-info">
+    <a href="https://wa.me/27662773338" class="contact-pill"><span class="ci">💬</span>WhatsApp: 066 277 3338</a>
+    <a href="tel:0662773338" class="contact-pill"><span class="ci">📞</span>Call: 066 277 3338</a>
+    <span class="contact-pill"><span class="ci">📍</span>1246 Bonafide St, Buhle Park Phase 2</span>
+  </div>
+</div>
+
+<footer>
+  <span class="tm">™</span> &nbsp; <strong style="color:var(--gold);font-style:italic;">Saru's Beauty Bar</strong> &nbsp; · &nbsp; All Rights Reserved &copy; 2025 &nbsp; · &nbsp; 1246 Bonafide St, Buhle Park Phase 2
+</footer>
+
+</body>
+</html>
